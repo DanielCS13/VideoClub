@@ -1,0 +1,22 @@
+---
+import Layout from "../../layout/Layout.astro";
+---
+
+<Layout navActive={3} title="Astro | Servicio" >
+	<div class="h-20" />
+
+    <form class="max-w-xl mx-auto flex flex-col bg-violet-800 p-10 rounded-3xl">
+        <h1 class="text-center font-bold text-2xl text-white mb-6">Crear servicio</h1>
+        <div class="space-y-8">
+            <label for="" class="flex flex-col space-y-2">
+                <span class=" text-white">Ingresar título de servicio</span>
+                <input type="text" name="" id="">
+            </label>
+            <label for="" class="flex flex-col space-y-2">
+                <span class=" text-white">Ingresar contenido de servicio</span>
+                <input type="text" name="" id="">
+            </label>
+        </div>
+        <button type="submit">Enviar servicio</button>
+    </form>
+</Layout>
