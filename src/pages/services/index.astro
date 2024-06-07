@@ -1,12 +1,27 @@
 ---
 import Layout from "../../layout/Layout.astro";
+import axios from "axios";
+
+
+	const response = await axios.get("http://localhost:3000/services");
+	const services = response.data;
+	console.log(services)
 ---
 
 <Layout navActive={3} title="Astro | Servicio" >
 	<div class="h-20" />
-    <h1>Este es la sección de servicios</h1>
-    <p>A continuación se muestran las rutas posibles a acceder:</p>
-    <ul class="flex flex-col" >
+    <h1>Servicios</h1>
+    <ul>
+        {
+            services.map((service) => (
+                <li>
+                    <a href={`services/${service.id}`}>{service.titulo}</a>
+                </li>
+            ))
+        }
+    </ul>
+    <!-- <p>A continuación se muestran las rutas posibles a acceder:</p> -->
+    <!-- <ul class="flex flex-col" >
         <li>
             <a href="services/show/5">Show con id 5</a>
         </li>
@@ -18,5 +33,5 @@ import Layout from "../../layout/Layout.astro";
             <a href="services/edit/8">Edit con id 8</a>
 
         </li>
-    </ul>
+    </ul> -->
 </Layout>
