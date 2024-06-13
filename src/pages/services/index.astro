@@ -5,12 +5,13 @@ import axios from "axios";
 
 	const response = await axios.get("http://localhost:3000/services");
 	const services = response.data;
-	console.log(services)
 ---
 
 <Layout navActive={3} title="Astro | Servicio" >
-	<div class="h-20" />
-    <h1>Servicios</h1>
+	<div class="pt-20 mx-auto max-w-screen-lg" >
+    <h1 class="text-3xl font-semibold" >Servicios</h1>
+    <a href="/services/create" class="bg-orange-500 text-white p-2 rounded-full my-4 inline-flex" >Crear servicio</a>
+    <h3 class="text-xl font-semibold" >Lista de servicios</h3>
     <ul>
         {
             services.map((service) => (
@@ -20,18 +21,5 @@ import axios from "axios";
             ))
         }
     </ul>
-    <!-- <p>A continuación se muestran las rutas posibles a acceder:</p> -->
-    <!-- <ul class="flex flex-col" >
-        <li>
-            <a href="services/show/5">Show con id 5</a>
-        </li>
-        <li>
-            <a href="services/create">Create</a>
-            
-        </li>
-        <li>
-            <a href="services/edit/8">Edit con id 8</a>
-
-        </li>
-    </ul> -->
+    </div>
 </Layout>

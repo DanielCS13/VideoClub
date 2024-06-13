@@ -10,13 +10,47 @@ import Layout from "../../layout/Layout.astro";
         <div class="space-y-8">
             <label for="" class="flex flex-col space-y-2">
                 <span class=" text-white">Ingresar título de servicio</span>
-                <input type="text" name="" id="">
+                <input 
+                type="text" name="" required aria-invalid="true" 
+                title="Por favor, ingrese un título para el servicio"
+                oninvalid="this.setCustomValidity('Por favor, ingrese un título para el servicio')"
+                oninput="this.setCustomValidity('')"
+                id="title" class="text-black" >
             </label>
             <label for="" class="flex flex-col space-y-2">
-                <span class=" text-white">Ingresar contenido de servicio</span>
-                <input type="text" name="" id="">
+                <span class=" text-white">Ingresar descripción del servicio</span>
+                <textarea 
+                name="" id="description" required aria-invalid="true" 
+                title="Por favor, ingrese una descripción para el servicio" 
+                oninvalid="this.setCustomValidity('Por favor, ingrese una descripción para el servicio')"
+                oninput="this.setCustomValidity('')"
+                class="resize-none text-black" ></textarea>
             </label>
         </div>
-        <button type="submit">Enviar servicio</button>
+        <div class="flex justify-center mt-8" >
+            <button class="bg-orange-500 hover:bg-orange-600 p-2 px-4 rounded-full " type="submit">Enviar servicio</button>
+        </div>
     </form>
 </Layout>
+
+<script>
+import axios from "axios";
+
+    document.querySelector('form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = (document.querySelector('#title') as HTMLInputElement).value ;
+        const description = (document.querySelector('#description') as HTMLInputElement).value;
+        const response = await axios.post('http://localhost:3000/services', 
+            { "titulo":title, 
+            "descripcion":description 
+            }
+        );
+        if (response.status === 201) {
+            (document.querySelector('#title') as HTMLInputElement).value = '';
+            (document.querySelector('#description') as HTMLInputElement).value = '';
+            window.location.href = '/services';
+        } else {
+            alert('Error al crear el servicio');
+        }
+    });
+</script>
