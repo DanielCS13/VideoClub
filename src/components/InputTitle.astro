@@ -1,0 +1,17 @@
+---
+interface Props {
+    titleSpan: String
+	titleValue: String
+}
+
+const { titleSpan, titleValue } = Astro.props
+---
+
+<span class=" text-white">{titleSpan}</span>
+<input 
+type="text" name="" required aria-invalid="true" 
+value=`${titleValue}`
+title="Por favor, ingrese un título para el servicio"
+oninvalid="this.setCustomValidity('Por favor, ingrese un título para el servicio')"
+oninput="this.setCustomValidity('')"
+id="title" class="text-black" >

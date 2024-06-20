@@ -1,0 +1,60 @@
+---
+import Layout from "../../../layout/Layout.astro";
+import InputTitle from "../../../components/InputTitle.astro";
+import InputDescription from "../../../components/InputDescription.astro";
+import axios from "axios";
+
+// export const prerender = false;
+
+const { id } = Astro.params;
+const response = await axios.get(`http://localhost:3000/services/${id}`);
+	const service = response.data;
+	console.log(service)
+---
+
+<Layout navActive={3} title={`Astro | Servicio ${id}`} >
+	<div class="h-20" />
+
+    <form class="max-w-xl mx-auto flex flex-col bg-violet-800 p-10 rounded-3xl">
+        <h1 class="text-center font-bold text-2xl text-white mb-6">Actualizar servicio</h1>
+        <div class="space-y-8">
+            <label for="" class="flex flex-col space-y-2">
+                <InputTitle 
+                    titleSpan="Actualizar título de servicio" 
+                    titleValue={service.titulo}
+                />
+            </label>
+            <label for="" class="flex flex-col space-y-2">
+                <InputDescription 
+                    titleSpan="Actualizar descripción del servicio" 
+                    titleValue={service.descripcion} 
+                />
+            </label>
+            <input type="hidden" id="id" value={id} >
+        </div>
+        <div class="flex justify-center mt-8" >
+            <button class="bg-orange-500 hover:bg-orange-600 p-2 px-4 rounded-full " type="submit">Enviar servicio</button>
+        </div>
+    </form>
+</Layout>
+
+<script>
+    import axios from "axios";
+    
+        document.querySelector('form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = (document.querySelector('#title') as HTMLInputElement).value ;
+            const description = (document.querySelector('#description') as HTMLInputElement).value;
+            const id = (document.querySelector('#id') as HTMLInputElement).value;
+            const response = await axios.patch(`http://localhost:3000/services/${id}`, 
+                { "titulo":title, 
+                "descripcion":description 
+                }
+            );
+            if (response.status === 200) {
+                window.location.href = `/services/${id}`;
+            } else {
+                alert('Error al crear el servicio');
+            }
+        });
+    </script>

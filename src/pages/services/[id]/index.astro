@@ -1,0 +1,52 @@
+---
+import Layout from "../../../layout/Layout.astro";
+import axios from "axios";
+
+// export const prerender = false;
+
+const { id } = Astro.params;
+const response = await axios.get(`http://localhost:3000/services/${id}`);
+const service = response.data;
+console.log(service)
+---
+
+<Layout navActive={3} title={`Astro | Servicio ${id}`} >
+	<div class="h-screen flex justify-center items-center ">
+        <div class="space-y-6 p-4 border-2 min-w-72 rounded-md bg-white text-black">
+            <div class="space-y-2">
+				<h1 class="text-2xl font-bold" >{service.titulo}</h1>
+            	<p class="text-lg " >{service.descripcion}</p>
+				<input type="hidden" id="id" value={id} >
+			</div>
+			<div class="flex justify-between *:px-2 *:py-1 *:rounded-md" >
+				<a href={`./${id}/edit`} class="bg-blue-500 text-white" >
+					<i class="fa-regular fa-pen-to-square"></i>
+					<span>Editar</span>
+				</a>
+				<button class="bg-red-500 text-white" id="deleteButton" >
+					<i class="fa-regular fa-trash"></i>
+					<span>Eliminar</span>
+				  </button>
+			</div>
+        </div>
+    </div>
+</Layout>
+
+<script>
+	import axios from "axios";
+  
+	document.getElementById('deleteButton').addEventListener('click', async () => {
+	  const id = (document.querySelector('#id') as HTMLButtonElement).value;
+	  try {
+		const deleteResponse = await axios.delete(`http://localhost:3000/services/${id}`);
+		if (deleteResponse.status === 200) {
+		  window.location.href = "/services"; // Redirige a la lista de servicios después de eliminar
+		} else {
+		  alert("Error al eliminar el servicio");
+		}
+	  } catch (error) {
+		alert("Error al eliminar el servicio");
+		console.error(error);
+	  }
+	});
+  </script>

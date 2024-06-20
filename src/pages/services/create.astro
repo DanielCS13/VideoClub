@@ -1,5 +1,7 @@
 ---
 import Layout from "../../layout/Layout.astro";
+import InputTitle from "../../components/InputTitle.astro";
+import InputDescription from "../../components/InputDescription.astro";
 ---
 
 <Layout navActive={3} title="Astro | Servicio" >
@@ -9,22 +11,16 @@ import Layout from "../../layout/Layout.astro";
         <h1 class="text-center font-bold text-2xl text-white mb-6">Crear servicio</h1>
         <div class="space-y-8">
             <label for="" class="flex flex-col space-y-2">
-                <span class=" text-white">Ingresar título de servicio</span>
-                <input 
-                type="text" name="" required aria-invalid="true" 
-                title="Por favor, ingrese un título para el servicio"
-                oninvalid="this.setCustomValidity('Por favor, ingrese un título para el servicio')"
-                oninput="this.setCustomValidity('')"
-                id="title" class="text-black" >
+                <InputTitle 
+                    titleSpan="Ingresar título de servicio" 
+                    titleValue=""
+                />
             </label>
             <label for="" class="flex flex-col space-y-2">
-                <span class=" text-white">Ingresar descripción del servicio</span>
-                <textarea 
-                name="" id="description" required aria-invalid="true" 
-                title="Por favor, ingrese una descripción para el servicio" 
-                oninvalid="this.setCustomValidity('Por favor, ingrese una descripción para el servicio')"
-                oninput="this.setCustomValidity('')"
-                class="resize-none text-black" ></textarea>
+                <InputDescription 
+                    titleSpan="Ingresar descripción del servicio" 
+                    titleValue="" 
+                />
             </label>
         </div>
         <div class="flex justify-center mt-8" >

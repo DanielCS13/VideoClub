@@ -1,0 +1,16 @@
+---
+interface Props {
+    titleSpan: String
+	titleValue: String
+}
+
+const { titleSpan, titleValue } = Astro.props
+---
+
+<span class=" text-white">{titleSpan}</span>
+<textarea 
+name="" id="description" required aria-invalid="true" 
+title="Por favor, ingrese una descripción para el servicio" 
+oninvalid="this.setCustomValidity('Por favor, ingrese una descripción para el servicio')"
+oninput="this.setCustomValidity('')"
+class="resize-none text-black text-start" >{titleValue}</textarea>
