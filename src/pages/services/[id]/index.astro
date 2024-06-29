@@ -40,7 +40,7 @@ console.log(service)
 	  try {
 		const deleteResponse = await axios.delete(`http://localhost:3000/services/${id}`);
 		if (deleteResponse.status === 200) {
-		  window.location.href = "/services"; // Redirige a la lista de servicios después de eliminar
+		  window.location.href = "/services";
 		} else {
 		  alert("Error al eliminar el servicio");
 		}

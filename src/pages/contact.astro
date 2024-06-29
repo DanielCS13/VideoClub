@@ -1,10 +1,91 @@
 ---
 import Layout from "../layout/Layout.astro";
 
-
 ---
 
-<Layout navActive={4} title="Astro | Contacto" >
+
+
+<Layout navActive={4} title="Astro | Servicio" >
 	<div class="h-20" />
-    <h1 >Este es el Contacto</h1>
+
+    <form class="max-w-xl mx-auto flex flex-col bg-violet-800 p-10 rounded-3xl">
+        <h1 class="text-center font-bold text-2xl text-white mb-6">Crear contacto</h1>
+        <div class="space-y-8">
+            <label for="" class="flex flex-col space-y-2">
+                <span class=" text-white">Nombre</span>
+                <input 
+                type="text" name="" required aria-invalid="true" 
+                value=``
+                title="Por favor, ingrese un nombre para el contacto"
+                oninvalid="this.setCustomValidity('Por favor, ingrese un nombre para el contacto')"
+                oninput="this.setCustomValidity('')"
+                id="name" class="text-black" >
+            </label>
+
+            <label for="" class="flex flex-col space-y-2">
+                <span class=" text-white">Correo electrónico</span>
+                <input 
+                type="email" name="" required aria-invalid="true" 
+                value=``
+                title="Por favor, ingrese un correo para el contacto"
+                oninvalid="this.setCustomValidity('Por favor, ingrese un correo para el contacto')"
+                oninput="this.setCustomValidity('')"
+                id="email" class="text-black" >
+            </label>
+
+            <label for="" class="flex flex-col space-y-2">
+                <span class=" text-white">Asunto</span>
+                <input 
+                type="text" name="" required aria-invalid="true" 
+                value=``
+                title="Por favor, ingrese un asunto para el contacto"
+                oninvalid="this.setCustomValidity('Por favor, ingrese un asunto para el contacto')"
+                oninput="this.setCustomValidity('')"
+                id="issue" class="text-black" >
+            </label>
+
+            <label for="" class="flex flex-col space-y-2">
+                <span class=" text-white">Mensaje</span>
+                <textarea 
+                name="" id="message" required aria-invalid="true" 
+                title="Por favor, ingrese una descripción para el servicio" 
+                oninvalid="this.setCustomValidity('Por favor, ingrese una descripción para el servicio')"
+                oninput="this.setCustomValidity('')"
+                class="resize-none text-black text-start" ></textarea>
+            </label>
+        </div>
+        <div class="flex justify-center mt-8" >
+            <button class="bg-orange-500 hover:bg-orange-600 p-2 px-4 rounded-full " type="submit">Enviar servicio</button>
+        </div>
+    </form>
 </Layout>
+
+<script>
+import axios from "axios";
+
+    document.querySelector('form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = (document.querySelector('#name') as HTMLInputElement).value ;
+        const email = (document.querySelector('#email') as HTMLInputElement).value;
+        const issue = (document.querySelector('#issue') as HTMLInputElement).value;
+        const message = (document.querySelector('#message') as HTMLInputElement).value;
+        const response = await axios.post('http://localhost:3000/contact', 
+            { 
+                "name":name, 
+                "email":email,
+                "issue":issue,
+                "message":message,
+                "frontend":"videoclub"
+            }
+        );
+        if (response.status === 201) {
+            (document.querySelector('#name') as HTMLInputElement).value = '';
+            (document.querySelector('#email') as HTMLInputElement).value = '';
+            (document.querySelector('#issue') as HTMLInputElement).value = '';
+            (document.querySelector('#message') as HTMLInputElement).value = '';
+            window.location.href = '/';
+        } else {
+            alert('Error al crear el servicio');
+        }
+    });
+</script>
