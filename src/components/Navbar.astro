@@ -4,6 +4,9 @@ interface Props {
 }
 
 const {navActive = 0} = Astro.props;
+//console log of token in local storage to see if it is working
+
+
 ---
 
 <header
@@ -44,7 +47,10 @@ const {navActive = 0} = Astro.props;
         <nav class="flex justify-end">
             <ul class="flex text-sm gap-4"  id="secondMenu-items">
                 <li class="bg-orange-400 text-white hover:bg-orange-600 transition-all duration-300 py-2 px-4 rounded-full">
-                    <a href="/login" >Ingresar</a>
+                    <a href="/auth/login" >Ingresar</a>
+                </li>
+                <li class="bg-orange-400 text-white hover:bg-orange-600 transition-all duration-300 py-2 px-4 rounded-full">
+                    <button name="logout" id="logout" >Salir</button>
                 </li>
             </ul>
         </nav>
@@ -66,6 +72,35 @@ const {navActive = 0} = Astro.props;
 </header>
 
 <script>
+
+    // if there a token in local storage, delete the li Servicios and a Ingresar
+    const token = localStorage.getItem('token');
+    if (!token) {
+        const menuItems = document.getElementById("menu-items") as HTMLUListElement;
+        const services = menuItems.querySelector('li:nth-child(3)');
+        services.remove();
+    }
+    // if there is no token in local storage, delete the li Salir
+    if (!token) {
+        const secondMenuItems = document.getElementById("secondMenu-items") as HTMLUListElement;
+        const salir = secondMenuItems.querySelector('li:nth-child(2)');
+        salir.remove();
+    }
+    if (token) {
+        const secondMenuItems = document.getElementById("secondMenu-items") as HTMLUListElement;
+        const ingresar = secondMenuItems.querySelector('li:nth-child(1)');
+        ingresar.remove();
+    }
+    // if click button Salir then remove token from local storage
+    const logout = document.getElementById("logout") as HTMLButtonElement;
+    if (logout) {
+        logout.addEventListener('click', () => {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        });
+    }
+
+
     document.addEventListener("DOMContentLoaded", () => {
     const menu = document.getElementById("menu") as HTMLUListElement
     const openBtn = document.getElementById("open-btn") as HTMLUListElement

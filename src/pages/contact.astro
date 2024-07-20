@@ -8,62 +8,80 @@ import Layout from "../layout/Layout.astro";
 <Layout navActive={4} title="Astro | Servicio" >
 	<div class="h-20" />
 
-    <form class="max-w-xl mx-auto flex flex-col bg-violet-800 p-10 rounded-3xl">
-        <h1 class="text-center font-bold text-2xl text-white mb-6">Crear contacto</h1>
-        <div class="space-y-8">
-            <label for="" class="flex flex-col space-y-2">
-                <span class=" text-white">Nombre</span>
-                <input 
-                type="text" name="" required aria-invalid="true" 
-                value=``
-                title="Por favor, ingrese un nombre para el contacto"
-                oninvalid="this.setCustomValidity('Por favor, ingrese un nombre para el contacto')"
-                oninput="this.setCustomValidity('')"
-                id="name" class="text-black" >
-            </label>
+    <div id="form-container">
+        <!-- El contenido del formulario se cargará aquí -->
+    </div>
+    
+    <p id="message-container" class="mx-auto max-w-xl" style="display: none;">
+        Ya se ha enviado un formulario, no puedes más hasta dentro de 1 hora. <a class="font-bold text-blue-500" href="/">Volver</a>
+    </p>
 
-            <label for="" class="flex flex-col space-y-2">
-                <span class=" text-white">Correo electrónico</span>
-                <input 
-                type="email" name="" required aria-invalid="true" 
-                value=``
-                title="Por favor, ingrese un correo para el contacto"
-                oninvalid="this.setCustomValidity('Por favor, ingrese un correo para el contacto')"
-                oninput="this.setCustomValidity('')"
-                id="email" class="text-black" >
-            </label>
-
-            <label for="" class="flex flex-col space-y-2">
-                <span class=" text-white">Asunto</span>
-                <input 
-                type="text" name="" required aria-invalid="true" 
-                value=``
-                title="Por favor, ingrese un asunto para el contacto"
-                oninvalid="this.setCustomValidity('Por favor, ingrese un asunto para el contacto')"
-                oninput="this.setCustomValidity('')"
-                id="issue" class="text-black" >
-            </label>
-
-            <label for="" class="flex flex-col space-y-2">
-                <span class=" text-white">Mensaje</span>
-                <textarea 
-                name="" id="message" required aria-invalid="true" 
-                title="Por favor, ingrese una descripción para el servicio" 
-                oninvalid="this.setCustomValidity('Por favor, ingrese una descripción para el servicio')"
-                oninput="this.setCustomValidity('')"
-                class="resize-none text-black text-start" ></textarea>
-            </label>
-        </div>
-        <div class="flex justify-center mt-8" >
-            <button class="bg-orange-500 hover:bg-orange-600 p-2 px-4 rounded-full " type="submit">Enviar servicio</button>
-        </div>
-    </form>
+    
 </Layout>
 
 <script>
-import axios from "axios";
+    import axios from "axios";
+    import Cookies from "js-cookie";
 
-    document.querySelector('form').addEventListener('submit', async (e) => {
+    // Función para mostrar el formulario
+    function showForm() {
+        const formHtml = `
+            <form class="max-w-xl mx-auto flex flex-col bg-violet-800 p-10 rounded-3xl">
+                <h1 class="text-center font-bold text-2xl text-white mb-6">Crear contacto</h1>
+                <div class="space-y-8">
+                    <label for="" class="flex flex-col space-y-2">
+                        <span class=" text-white">Nombre</span>
+                        <input 
+                        type="text" name="" required aria-invalid="true" 
+                        value=""
+                        title="Por favor, ingrese un nombre para el contacto"
+                        oninvalid="this.setCustomValidity('Por favor, ingrese un nombre para el contacto')"
+                        oninput="this.setCustomValidity('')"
+                        id="name" class="text-black" >
+                    </label>
+
+                    <label for="" class="flex flex-col space-y-2">
+                        <span class=" text-white">Correo electrónico</span>
+                        <input 
+                        type="email" name="" required aria-invalid="true" 
+                        value=""
+                        title="Por favor, ingrese un correo para el contacto"
+                        oninvalid="this.setCustomValidity('Por favor, ingrese un correo para el contacto')"
+                        oninput="this.setCustomValidity('')"
+                        id="email" class="text-black" >
+                    </label>
+
+                    <label for="" class="flex flex-col space-y-2">
+                        <span class=" text-white">Asunto</span>
+                        <input 
+                        type="text" name="" required aria-invalid="true" 
+                        value=""
+                        title="Por favor, ingrese un asunto para el contacto"
+                        oninvalid="this.setCustomValidity('Por favor, ingrese un asunto para el contacto')"
+                        oninput="this.setCustomValidity('')"
+                        id="issue" class="text-black" >
+                    </label>
+
+                    <label for="" class="flex flex-col space-y-2">
+                        <span class=" text-white">Mensaje</span>
+                        <textarea 
+                        name="" id="message" required aria-invalid="true" 
+                        title="Por favor, ingrese una descripción para el servicio" 
+                        oninvalid="this.setCustomValidity('Por favor, ingrese una descripción para el servicio')"
+                        oninput="this.setCustomValidity('')"
+                        class="resize-none text-black text-start" ></textarea>
+                    </label>
+                </div>
+                <div class="flex justify-center mt-8" >
+                    <button class="bg-orange-500 hover:bg-orange-600 p-2 px-4 rounded-full " type="submit">Enviar servicio</button>
+                </div>
+            </form>
+        `;
+        document.getElementById('form-container').innerHTML = formHtml;
+    }
+
+    function handleFormSubmission() {
+        document.querySelector('form').addEventListener('submit', async (e) => {
         e.preventDefault();
         const name = (document.querySelector('#name') as HTMLInputElement).value ;
         const email = (document.querySelector('#email') as HTMLInputElement).value;
@@ -79,13 +97,28 @@ import axios from "axios";
             }
         );
         if (response.status === 201) {
+            Cookies.set('session', 'submitted', { expires: 1 }); // Establecer cookie
             (document.querySelector('#name') as HTMLInputElement).value = '';
             (document.querySelector('#email') as HTMLInputElement).value = '';
             (document.querySelector('#issue') as HTMLInputElement).value = '';
             (document.querySelector('#message') as HTMLInputElement).value = '';
-            window.location.href = '/';
+            window.location.href = '/contact';
         } else {
             alert('Error al crear el servicio');
         }
+        });
+    }
+
+    // Comprobar si la cookie está presente
+    document.addEventListener('DOMContentLoaded', () => {
+        const cookieValue = Cookies.get('session');
+        if (cookieValue) {
+            document.getElementById('form-container').style.display = 'none';
+            document.getElementById('message-container').style.display = 'block';
+        } else {
+            showForm();
+            handleFormSubmission();
+        }
     });
+    
 </script>
