@@ -15,6 +15,7 @@ console.log(service)
         <div class="space-y-6 p-4 border-2 min-w-72 rounded-md bg-white text-black">
             <div class="space-y-2">
 				<h1 class="text-2xl font-bold" >{service.titulo}</h1>
+				<img class="h-40" src=`http://localhost:3000/${service.image}` alt="">
             	<p class="text-lg " >{service.descripcion}</p>
 				<input type="hidden" id="id" value={id} >
 			</div>
